@@ -3,7 +3,8 @@
 	xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head th:fragment="head">
 <meta charset="UTF-8" />
-<title th:text="'Harry Potter BS ' + ${titulo}"></title>
+<!-- <title th:text="'BiciAndes ' + ${titulo}"></title> -->
+<title th:text="'BiciAndes '"></title>
 <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}" />
 <link rel="stylesheet" th:href="@{/css/miStyle.css}" />
 <link rel="stylesheet"
@@ -15,7 +16,9 @@
 
 	<header th:fragment="header">
 		<nav class="navbar navbar-expand-md navbar-dark bg-blue">
-			<a class="navbar-brand" href="#">Harry Potter BS</a>
+
+			<a class="navbar-brand"   th:href="@{|/?sidebar=${sidebar}|}"><span class="navbar-toggler-icon"></span> BiciAndes</a>
+
 			<button class="navbar-toggler" type="button" data-toggle="collapse"
 				aria-label="Toggle navigation">
 				<span class="navbar-toggler-icon"></span>
@@ -32,8 +35,9 @@
 					<li class="nav-link">|</li>
 					<li><a class="nav-link" th:href="@{/cart}"> Mi carrito <i
 							class="fas fa-shopping-cart"></a></i></li>
-	
-					<li sec:authorize="!isAuthenticated()" class="dropdown show ml-2 mr-4"><a
+
+					<li sec:authorize="!isAuthenticated()"
+						class="dropdown show ml-2 mr-4"><a
 						class="btn btn-outline-secondary dropdown-toggle" href="#"
 						role="button" id="dropdownMenuLink" data-toggle="dropdown"
 						aria-haspopup="true" aria-expanded="false"><span
@@ -63,6 +67,22 @@
 			th:text="${info}"></div>
 	</header>
 
+	<!-- Sidebar -->
+	<div th:fragment="sidebar" >
+		<div id="wrapper" class=" bg-blue text-light">
+			<div class="bg-lightborder-right " id="sidebar-wrapper">
+				<div class="sidebar-heading">Menu BiciAndes</div>
+				<div class="list-group list-group-flush">
+					<a href="#" class="list-group-item list-group-item-action bg-blue text-light ">Datos de Usuario</a>
+					<a href="#" class="list-group-item list-group-item-action bg-blue text-light">Datos de la bicicleta</a>
+					<a href="#" class="list-group-item list-group-item-action bg-blue text-light">Estadisticas</a>
+					<a href="#" class="list-group-item list-group-item-action bg-blue text-light">Redes Sociales</a>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- /#sidebar-wrapper -->
+
 	<div class="container"></div>
 
 
@@ -79,11 +99,13 @@
 		<script th:src="@{/js/jquery-3.4.1.min.js}"></script>
 		<script th:src="@{/js/popper.min.js}"></script>
 		<script th:src="@{/js/bootstrap.min.js}"></script>
+		<script th:src="@{/js/bootstrap.bundle.min.js}"></script>
 		<script>
 			$(document).ready(function() {
 				$('[data-toggle="tooltip"]').tooltip();
 			});
 		</script>
+
 	</footer>
 
 </body>
