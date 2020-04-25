@@ -26,15 +26,12 @@
 			<div class="collapse navbar-collapse">
 				<ul class="navbar-nav mr-auto">
 					<li class="nav-item"><a class="nav-link" th:href="@{/}">Home</a></li>
-					<li class="nav-item"><a class="nav-link" href="#about"
-						th:href="@{/cart}">Carrito</a></li>
+					<!-- <li class="nav-item"><a class="nav-link" href="#about" th:href="@{/cart}">Carrito</a></li> -->
 				</ul>
 				<ul class="navbar-nav navbar-right navbar-dark">
 
-					<li class="nav-link">Mi cuenta</li>
-					<li class="nav-link">|</li>
-					<li><a class="nav-link" th:href="@{/cart}"> Mi carrito <i
-							class="fas fa-shopping-cart"></a></i></li>
+					<li class="nav-link"> <i class="fas fa-user-circle fa-lg"></i> Mi Cuenta</li>
+					
 
 					<li sec:authorize="!isAuthenticated()"
 						class="dropdown show ml-2 mr-4"><a
