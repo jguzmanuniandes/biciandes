@@ -17,7 +17,8 @@
 	<header th:fragment="header">
 		<nav class="navbar navbar-expand-md navbar-dark bg-blue">
 
-			<a class="navbar-brand"   th:href="@{|/?sidebar=${sidebar}|}"><span class="navbar-toggler-icon"></span> BiciAndes</a>
+			<a class="navbar-brand" th:href="@{|/?sidebar=${sidebar}|}"><span
+				class="navbar-toggler-icon"></span> BiciAndes</a>
 
 			<button class="navbar-toggler" type="button" data-toggle="collapse"
 				aria-label="Toggle navigation">
@@ -30,8 +31,9 @@
 				</ul>
 				<ul class="navbar-nav navbar-right navbar-dark">
 
-					<li class="nav-link"> <i class="fas fa-user-circle fa-lg"></i> Mi Cuenta</li>
-					
+					<li class="nav-link"><i class="fas fa-user-circle fa-lg"></i>
+						Mi Cuenta</li>
+
 
 					<li sec:authorize="!isAuthenticated()"
 						class="dropdown show ml-2 mr-4"><a
@@ -65,15 +67,24 @@
 	</header>
 
 	<!-- Sidebar -->
-	<div th:fragment="sidebar"  >
-		<div id="wrapper" class="bg-blue text-light" style="width:250px">
+	<div th:fragment="sidebar">
+		<div id="wrapper" class="bg-blue text-light" style="width: 250px">
 			<div class="bg-lightborder-right bg-blue" id="sidebar-wrapper">
 				<div class="sidebar-heading title-menu">Menu BiciAndes</div>
 				<div class="list-group list-group-flush">
-					<a href="#" class="list-group-item list-group-item-action bg-blue text-light "><i class="far fa-address-card fa-lg" style="margin-right:7px"></i> Datos de Usuario</a>
-					<a href="#" class="list-group-item list-group-item-action bg-blue text-light"><i class="fas fa-bicycle fa-lg" style="margin-right:4px"></i> Datos de la bicicleta</a>
-					<a href="#" class="list-group-item list-group-item-action bg-blue text-light"><i class="fas fa-chart-area fa.lg" style="margin-right:9px"></i> Estadisticas</a>
-					<a href="#" class="list-group-item list-group-item-action bg-blue text-light"><i class="fas fa-share-alt fa-lg" style="margin-right:9px"></i> Redes Sociales</a>
+					<a th:href="@{|/ver/${idUser}|}"
+						class="list-group-item list-group-item-action bg-blue text-light "><i
+						class="far fa-address-card fa-lg" style="margin-right: 7px"></i>
+						Datos de Usuario</a> <a th:href="@{|/ver/${sidebar}|}"
+						class="list-group-item list-group-item-action bg-blue text-light"><i
+						class="fas fa-bicycle fa-lg" style="margin-right: 4px"></i> Datos
+						de la bicicleta</a> <a href="#"
+						class="list-group-item list-group-item-action bg-blue text-light"><i
+						class="fas fa-chart-area fa.lg" style="margin-right: 9px"></i>
+						Estadisticas</a> <a href="#"
+						class="list-group-item list-group-item-action bg-blue text-light"><i
+						class="fas fa-share-alt fa-lg" style="margin-right: 9px"></i>
+						Redes Sociales</a>
 				</div>
 			</div>
 		</div>
@@ -92,6 +103,13 @@
 				href="https://www.linkedin.com/in/eduard-duarte-48027196/"
 				target="_blank"> Ing Eduard Duarte Sepúlveda </a>
 		</div>
+
+		<p sec:authorize="isAuthenticated()">
+			<span th:text="#{text.footer.user}">Usuario logeado:</span> <span
+				sec:authentication="name"></span> | <span
+				th:text="#{text.footer.roles}">Roles:</span> <span
+				sec:authentication="principal.authorities"></span>
+		</p>
 
 		<script th:src="@{/js/jquery-3.4.1.min.js}"></script>
 		<script th:src="@{/js/popper.min.js}"></script>

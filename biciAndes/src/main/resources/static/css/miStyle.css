@@ -40,3 +40,11 @@ footer {
 	margin: 12px ;
 	font-weight: bold;
 }
+html, body {
+  height: 100%;
+  margin: 0;
+}
+
+.full-height {
+  height: 100%;
+}
