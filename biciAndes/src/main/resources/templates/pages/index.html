@@ -5,7 +5,7 @@
 	<header th:replace="shared/layout :: header"></header>
 	<div class="d-flex" id="wrapper">
 		<!-- Sidebar -->
-		<div th:if="${sidebar == 1}">
+		<div th:if="${sidebar == 1}" class="bg-blue" >
 			<div th:replace="shared/layout :: sidebar"></div>
 		</div>
 		<!-- /#sidebar-wrapper -->

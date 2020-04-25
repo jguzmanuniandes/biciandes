@@ -25,10 +25,18 @@ footer {
 .bg-blue {
 	background-color: #1c2a48 !important
 }
+
 .fa-times-circle {
-  color: #800000;
+	color: #800000;
 }
 
-.fa-searchengin{
+.fa-searchengin {
 	color: #808080;
+}
+
+.title-menu {
+	text-align: center;
+	font-size: x-large; 
+	margin: 12px ;
+	font-weight: bold;
 }

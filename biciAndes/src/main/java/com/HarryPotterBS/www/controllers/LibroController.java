@@ -24,18 +24,19 @@ public class LibroController {
 	private Libro nlib;
 
 	@RequestMapping(value = { "/index", "/" })
-	public String cargar(Model model, @RequestParam(value = "sidebar", required = false) Long id) {
+	public String cargar(Model model, @RequestParam(value = "sidebar", required = false) String id) {
 
-		int flagSideBar = 3;
+		int flagSideBar = 0;
 		if (id == null) flagSideBar = 1;
 		if (id != null) {
-			if (id == 1) {
+			if (id.equals("1")) {
 				flagSideBar = 0;
 			}
-			if (id == 0) {
+			if (id.equals("0")) {
 				flagSideBar = 1;
 			}
-		}
+		}else {flagSideBar=0;};
+		
 		this.nlib.setCantidad(1);
 		List<Libro> libros = libroService.findAll();
 		model.addAttribute("libros", libros);
