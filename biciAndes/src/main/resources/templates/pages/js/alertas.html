@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+	<div th:fragment="alertsJS">
+		<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+		<script type="text/javascript">
+	function alertEliminar() {
+		swal({
+			  title: "¿Esta seguro de eliminar todos los Libros de su Carrito?",
+			  text: "una vez eliminados los libros de su carrito no se podrán recuperar",
+			  icon: "warning",
+			  buttons: true,
+			  dangerMode: true,
+			})
+			.then((willDelete) => {
+			  if (willDelete) {
+			    swal("Su carrito ahora está vacio!", {
+			      title: "Su compra se ha cancelado",
+			      icon: "success",
+			    }).then(function () {
+			    	$('#delCompra')[0].click();
+                });
+			  } else {
+			    swal("Todos sus libros se encuentran disponibles", {
+			    	title: "¡Puede continuar con su compra!",
+			    });
+			  }
+			});
+	};
+	
+	function alertComprar() {
+		swal({
+			  title: "¿Desea finalizar su compra?",
+			  text: "Una vez finalizada se generara la factura y se realizara el cobro",
+			  icon: "warning",
+			  buttons: true,
+			  dangerMode: false,
+			})
+			.then((willDelete) => {
+			  if (willDelete) {
+			    swal("Hemos recibido su solicitud y será procesada por nuestros agentes", {
+			      title: "GRACIAS POR SU COMPRA",
+			      icon: "success",
+			    }).then(function () {
+			    	$('#doCompra')[0].click();
+                });
+			  } else {
+			    swal("Todos sus libros se encuentran disponibles", {
+			    	title: "¡Puede continuar con su compra!",
+			    });
+			  }
+			});
+	};
+	</script>
+	</div>
+</body>
+</html>

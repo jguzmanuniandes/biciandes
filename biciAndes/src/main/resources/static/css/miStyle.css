@@ -1,0 +1,34 @@
+@font-face {
+	font-family: HarryFont;
+	src: url(HarryFont.TTF);
+}
+
+footer {
+	/*   position: absolute;
+  bottom: 0;
+  width: 100%;
+  height: 40px;
+  color: white; */
+	
+}
+
+.hp-title {
+	font-family: HarryFont;
+	font-size: xx-large;
+}
+
+.card-horizontal {
+	display: flex;
+	flex: 1 1 auto;
+}
+
+.bg-blue {
+	background-color: #1c2a48 !important
+}
+.fa-times-circle {
+  color: #800000;
+}
+
+.fa-searchengin{
+	color: #808080;
+}
