@@ -40,6 +40,9 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.BiciAndes.www.models.entity.Cliente;
+import com.BiciAndes.www.models.entity.SuperClient;
+import com.BiciAndes.www.models.entity.Usuario;
+import com.BiciAndes.www.models.entity.dao.intefaces.IUsuarioDao;
 import com.BiciAndes.www.models.service.IClienteService;
 import com.BiciAndes.www.models.service.IUploadFileService;
 import com.BiciAndes.www.util.paginator.PageRender;
@@ -56,7 +59,10 @@ public class ClienteController {
 
 	@Autowired
 	private IUploadFileService uploadFileService;
-
+	
+	@Autowired
+	private IUsuarioDao usuarioDao;
+	
 	@Secured({"ROLE_USER"})
 	@GetMapping(value = "/uploads/{filename:.+}")
 	public ResponseEntity<Resource> verFoto(@PathVariable String filename) {
@@ -135,7 +141,7 @@ public class ClienteController {
 		return "pages/admin/listar";
 	}
 
-	@Secured("ROLE_ADMIN")
+	@Secured("ROLE_USER")
 	@RequestMapping(value = "/form")
 	public String crear(Map<String, Object> model) {
 
@@ -145,7 +151,7 @@ public class ClienteController {
 		return "form";
 	}
 
-	@PreAuthorize("hasRole('ROLE_ADMIN')")
+	@PreAuthorize("hasRole('ROLE_USER')")
 	@RequestMapping(value = "/form/{id}")
 	public String editar(@PathVariable(value = "id") Long id, Map<String, Object> model, RedirectAttributes flash) {
 
@@ -161,16 +167,29 @@ public class ClienteController {
 			flash.addFlashAttribute("error", "El ID del cliente no puede ser cero!");
 			return "redirect:/listar";
 		}
-		model.put("cliente", cliente);
+		
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();  
+//		String idUser = auth.getName().split(",")[0];
+		System.out.println(auth.getName());
+		Usuario usuario = usuarioDao.findByUsername(auth.getName());
+		
+		SuperClient sclient = new SuperClient(cliente, usuario);
+		
+		System.out.println(sclient.getCliente().getId());
+//		System.out.println(sclient.getUsuario().getId());
+		
+		
+		model.put("sclient", sclient);	
+//		model.put("cliente", cliente);
 		model.put("titulo", "Editar Cliente");
 		model.put("btnLabel", "Editar");
 		model.put("url","/form");
 		return "form";
 	}
 
-	@Secured("ROLE_ADMIN")
+	@Secured("ROLE_USER")
 	@RequestMapping(value = "/form", method = RequestMethod.POST)
-	public String guardar(@Valid Cliente cliente, BindingResult result, Model model,
+	public String guardar(@Valid SuperClient scliente, BindingResult result, Model model,
 			@RequestParam("file") MultipartFile foto, RedirectAttributes flash, SessionStatus status) {
 
 		if (result.hasErrors()) {
@@ -180,10 +199,10 @@ public class ClienteController {
 
 		if (!foto.isEmpty()) {
 
-			if (cliente.getId() != null && cliente.getId() > 0 && cliente.getFoto() != null
-					&& cliente.getFoto().length() > 0) {
+			if (scliente.getCliente().getId() != null && scliente.getCliente().getId() > 0 && scliente.getCliente().getFoto() != null
+					&& scliente.getCliente().getFoto().length() > 0) {
 
-				uploadFileService.delete(cliente.getFoto());
+				uploadFileService.delete(scliente.getCliente().getFoto());
 			}
 
 			String uniqueFilename = null;
@@ -195,16 +214,16 @@ public class ClienteController {
 
 			flash.addFlashAttribute("info", "Has subido correctamente '" + uniqueFilename + "'");
 
-			cliente.setFoto(uniqueFilename);
+			scliente.getCliente().setFoto(uniqueFilename);
 
 		}
+		System.out.println("scliente.getCliente().getId(): "+scliente.getCliente().getId());
+		String mensajeFlash = (scliente.getCliente().getId() != null) ? "Cliente editado con éxito!" : "Cliente creado con éxito!";
 
-		String mensajeFlash = (cliente.getId() != null) ? "Cliente editado con éxito!" : "Cliente creado con éxito!";
-
-		clienteService.save(cliente);
+		clienteService.save(scliente.getCliente());
 		status.setComplete();
 		flash.addFlashAttribute("success", mensajeFlash);
-		return "redirect:listar";
+		return "redirect:ver/"+scliente.getCliente().getId();
 	}
 
 	@Secured("ROLE_ADMIN")

@@ -104,12 +104,6 @@
 				target="_blank"> Ing Eduard Duarte Sepúlveda </a>
 		</div>
 
-		<p sec:authorize="isAuthenticated()">
-			<span th:text="#{text.footer.user}">Usuario logeado:</span> <span
-				sec:authentication="name"></span> | <span
-				th:text="#{text.footer.roles}">Roles:</span> <span
-				sec:authentication="principal.authorities"></span>
-		</p>
 
 		<script th:src="@{/js/jquery-3.4.1.min.js}"></script>
 		<script th:src="@{/js/popper.min.js}"></script>

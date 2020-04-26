@@ -24,6 +24,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.BiciAndes.www.models.entity.Cliente;
 import com.BiciAndes.www.models.entity.Role;
+import com.BiciAndes.www.models.entity.SuperClient;
 import com.BiciAndes.www.models.entity.Usuario;
 import com.BiciAndes.www.models.entity.dao.intefaces.IUsuarioDao;
 import com.BiciAndes.www.models.service.IClienteService;
@@ -74,7 +75,6 @@ public class LoginController {
 			@RequestParam(value="logout", required = false) String logout,
 			Model model, Principal principal, RedirectAttributes flash) {
 		
-		System.out.println("ojooooooooooo");
 		if(error != null) {
 			model.addAttribute("error", "Error en el login: Nombre de usuario o contraseña incorrecta, por favor vuelva a intentarlo!");
 		}
@@ -82,8 +82,11 @@ public class LoginController {
 		if(logout != null) {
 			model.addAttribute("success", "Ha cerrado sesión con éxito!");
 		}
-		Cliente cliente = new Cliente();
-		model.addAttribute("cliente", cliente);
+		SuperClient sclient = new SuperClient();
+		
+		model.addAttribute("sclient", sclient);
+//		model.addAttribute("usuario", sclient.getUsuario());
+//		model.addAttribute("cliente", sclient.getCliente());
 		model.addAttribute("titulo", "Ingrese los datos de Registro del cliente");
 		model.addAttribute("isRegister", "true");
 		model.addAttribute("btnLabel", "Registrar");
@@ -95,7 +98,7 @@ public class LoginController {
 	
 //	@Secured("ROLE_ADMIN")
 	@RequestMapping(value = "/register", method = RequestMethod.POST)
-	public String guardar(@Valid Cliente cliente, BindingResult result, Model model,
+	public String guardar(@Valid SuperClient sclient, BindingResult result, Model model,
 			@RequestParam("file") MultipartFile foto, RedirectAttributes flash, SessionStatus status) {
 
 		if (result.hasErrors()) {
@@ -105,10 +108,10 @@ public class LoginController {
 
 		if (!foto.isEmpty()) {
 
-			if (cliente.getId() != null && cliente.getId() > 0 && cliente.getFoto() != null
-					&& cliente.getFoto().length() > 0) {
+			if (sclient.getCliente().getId() != null && sclient.getCliente().getId() > 0 && sclient.getCliente().getFoto() != null
+					&& sclient.getCliente().getFoto().length() > 0) {
 
-				uploadFileService.delete(cliente.getFoto());
+				uploadFileService.delete(sclient.getCliente().getFoto());
 			}
 
 			String uniqueFilename = null;
@@ -120,36 +123,37 @@ public class LoginController {
 
 			flash.addFlashAttribute("info", "Has subido correctamente '" + uniqueFilename + "'");
 
-			cliente.setFoto(uniqueFilename);
+			sclient.getCliente().setFoto(uniqueFilename);
 
 		}
 
-		String mensajeFlash = (cliente.getId() != null) ? "Cliente creado con éxito!" : "Cliente creado con éxito!";
+		String mensajeFlash = (sclient.getCliente().getId() != null) ? "Cliente creado con éxito!" : "Cliente creado con éxito!";
 
 		
-		//Tabla Users
-		//set Role
+		//Tabla Users //set Role
 		Role role = new Role();
 		role.setAuthority("ROLE_USER");
-//		role.setId(23l);
 		List<Role> roles = new ArrayList<Role>();
 		roles.add(role);
 		//Tabla 
-		String bcryptPassword = passwordEncoder.encode("12345");
-		Usuario usuario = new Usuario();
-		usuario.setUsername("user48");
-		usuario.setPassword(bcryptPassword);
-		usuario.setId(44L);
-		usuario.setRoles(roles);
-		usuario.setEnabled(true);
+//		Usuario usuario = new Usuario();
+//		usuario.setPassword(bcryptPassword);
+//		usuario.setUsername(sclient.getUsuario().getUsername());
+//		usuario.setId(44L);
+//		usuario.setRoles(roles);
+//		usuario.setEnabled(true);
 		
+		sclient.getUsuario().setEnabled(true);
+		sclient.getUsuario().setRoles(roles);
+		String bcryptPassword = passwordEncoder.encode(sclient.getUsuario().getPassword());
+		sclient.getUsuario().setPassword(bcryptPassword);
 //		clienteDao.save(cliente);
 		
-		Long idUser = usuarioDao.save(usuario).getId();
+		Long idUser = usuarioDao.save(sclient.getUsuario()).getId();
 		
 		//Almacenar cliente
-		cliente.setIdUser(idUser);
-		clienteService.save(cliente);
+		sclient.getCliente().setIdUser(idUser);
+		clienteService.save(sclient.getCliente());
 		status.setComplete();
 		flash.addFlashAttribute("success", mensajeFlash);
 		
