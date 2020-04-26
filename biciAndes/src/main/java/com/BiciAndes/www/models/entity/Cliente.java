@@ -31,7 +31,9 @@ public class Cliente implements Serializable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-
+	
+	private Long idUser;
+	
 	@NotEmpty
 	private String nombres;
 	
@@ -118,6 +120,14 @@ public class Cliente implements Serializable {
 	
 	public void addFactura(Factura factura) {
 		facturas.add(factura);
+	}
+
+	public Long getIdUser() {
+		return idUser;
+	}
+
+	public void setIdUser(Long idUser) {
+		this.idUser = idUser;
 	}
 
 	@Override

@@ -164,6 +164,7 @@ public class ClienteController {
 		model.put("cliente", cliente);
 		model.put("titulo", "Editar Cliente");
 		model.put("btnLabel", "Editar");
+		model.put("url","/form");
 		return "form";
 	}
 
