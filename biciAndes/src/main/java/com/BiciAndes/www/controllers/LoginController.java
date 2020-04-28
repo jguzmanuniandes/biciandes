@@ -43,9 +43,6 @@ public class LoginController {
 	private IUsuarioDao usuarioDao;
 	
 	@Autowired
-	private IClienteService clienteDao;
-	
-	@Autowired
 	private BCryptPasswordEncoder passwordEncoder;
 
 	@GetMapping("/login")
