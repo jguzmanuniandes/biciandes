@@ -1,5 +1,6 @@
 package com.BiciAndes.www.controllers;
 
+import java.io.File;
 import java.io.IOException;
 import java.security.Principal;
 import java.util.ArrayList;
@@ -29,6 +30,16 @@ import com.BiciAndes.www.models.entity.Usuario;
 import com.BiciAndes.www.models.entity.dao.intefaces.IUsuarioDao;
 import com.BiciAndes.www.models.service.IClienteService;
 import com.BiciAndes.www.models.service.IUploadFileService;
+import com.amazonaws.auth.AWSCredentials;
+import com.amazonaws.auth.AWSStaticCredentialsProvider;
+import com.amazonaws.auth.BasicAWSCredentials;
+import com.amazonaws.regions.Regions;
+import com.amazonaws.services.s3.AmazonS3;
+import com.amazonaws.services.s3.AmazonS3ClientBuilder;
+import com.amazonaws.services.s3.model.ObjectMetadata;
+import com.amazonaws.services.s3.model.PutObjectRequest;
+import com.amazonaws.services.s3.transfer.TransferManager;
+import com.amazonaws.services.s3.transfer.TransferManagerBuilder;
 
 @Controller
 public class LoginController {
@@ -47,6 +58,15 @@ public class LoginController {
 	
 	@Autowired
 	private BCryptPasswordEncoder passwordEncoder;
+	
+	//AWS
+    private AmazonS3 amazonClient;
+//    private AmazonClient asmazonClient;
+
+//    @Autowired
+//    BucketController(AmazonClient amazonClient) {
+//        this.amazonClient = amazonClient;
+//    }
 
 	@GetMapping("/login")
 	public String login(@RequestParam(value="error", required=false) String error,
@@ -91,7 +111,7 @@ public class LoginController {
 		model.addAttribute("isRegister", "true");
 		model.addAttribute("btnLabel", "Registrar");
 		model.addAttribute("url","/register");
-		model.addAttribute("version", "free");
+		model.addAttribute("version", "master");
 		
 		
 		return "form";
@@ -108,23 +128,53 @@ public class LoginController {
 		}
 
 		if (!foto.isEmpty()) {
-
-			if (sclient.getCliente().getId() != null && sclient.getCliente().getId() > 0 && sclient.getCliente().getFoto() != null
-					&& sclient.getCliente().getFoto().length() > 0) {
-
-				uploadFileService.delete(sclient.getCliente().getFoto());
-			}
-
-			String uniqueFilename = null;
+			System.out.println("Empezo carga de Foto");
+			AWSCredentials credentials = new BasicAWSCredentials(
+					  "AKIA2JSBIF6LEUDL3PAF", 
+					  "P9MURA7O1iH0b35DCTm4OdG3XzbJE303fxbOekeE"
+					);		
+			
+			AmazonS3 s3client = AmazonS3ClientBuilder
+					  .standard()
+					  .withCredentials(new AWSStaticCredentialsProvider(credentials))
+					  .withRegion(Regions.US_EAST_2)
+					  .build();
+			
+			TransferManager tm = TransferManagerBuilder.standard()
+					  .withS3Client(s3client)
+					  .withMultipartUploadThreshold((long) (5 * 1024 * 1025))
+					  .build();
+			
+			ObjectMetadata objectMetaData = new ObjectMetadata();
+			objectMetaData.setContentType(foto.getContentType());
+			objectMetaData.setContentLength(foto.getSize());
+			System.out.println(foto.getName());
+			System.out.println(foto.getContentType());
 			try {
-				uniqueFilename = uploadFileService.copy(foto);
+				s3client.putObject(new PutObjectRequest("biciandes", foto.getName(), foto.getInputStream(),objectMetaData));
 			} catch (IOException e) {
+				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
+					  
+				
 
-			flash.addFlashAttribute("info", "Has subido correctamente '" + uniqueFilename + "'");
-
-			sclient.getCliente().setFoto(uniqueFilename);
+//			if (sclient.getCliente().getId() != null && sclient.getCliente().getId() > 0 && sclient.getCliente().getFoto() != null
+//					&& sclient.getCliente().getFoto().length() > 0) {
+//
+//				uploadFileService.delete(sclient.getCliente().getFoto());
+//			}
+//
+//			String uniqueFilename = null;
+//			try {
+//				uniqueFilename = uploadFileService.copy(foto);
+//			} catch (IOException e) {
+//				e.printStackTrace();
+//			}
+//
+//			flash.addFlashAttribute("info", "Has subido correctamente '" + uniqueFilename + "'");
+//
+//			sclient.getCliente().setFoto(uniqueFilename);
 
 		}
 
