@@ -91,6 +91,7 @@ public class LoginController {
 		model.addAttribute("isRegister", "true");
 		model.addAttribute("btnLabel", "Registrar");
 		model.addAttribute("url","/register");
+		model.addAttribute("version", "free");
 		
 		
 		return "form";

@@ -11,6 +11,7 @@ import javax.validation.Valid;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
 
 import org.springframework.data.domain.Page;
@@ -60,6 +61,9 @@ public class ClienteController {
 	@Autowired
 	private IUploadFileService uploadFileService;
 	
+//	@Value("${conf.version}")
+//	private String version;
+	
 	@Autowired
 	private IUsuarioDao usuarioDao;
 	
@@ -94,7 +98,9 @@ public class ClienteController {
 		model.put("titulo", "Detalle cliente: " + cliente.getNombres());
 		return "ver";
 	}
-
+	
+	@PreAuthorize("hasRole('ROLE_ADMIN"
+			+ "')")
 	@RequestMapping(value = "/listar", method = RequestMethod.GET)
 	public String listar(@RequestParam(name = "page", defaultValue = "0") int page, Model model,
 			Authentication authentication,
@@ -184,6 +190,7 @@ public class ClienteController {
 		model.put("titulo", "Editar Cliente");
 		model.put("btnLabel", "Editar");
 		model.put("url","/form");
+		model.put("version", "master");
 		return "form";
 	}
 
