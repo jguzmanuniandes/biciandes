@@ -51,15 +51,20 @@ public class BiciController {
 		}else {flagSideBar=0;};
 		
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication(); 
-		System.out.println(auth.getName());
+//		System.out.println(auth.getName());
 		
 //		String idUser = auth.getName().split(",")[0];
 //		System.out.println("idUser: "+idUser);
-		Usuario usuario = usuarioDao.findByUsername(auth.getName());
-		System.out.println(usuario.getUsername());
-		Cliente cliente = clienteDao.findByIdUser(usuario.getId());
 		
-		model.addAttribute("idUser",cliente.getId());
+		try {
+			Usuario usuario = usuarioDao.findByUsername(auth.getName());
+//	    	System.out.println(usuario.getUsername());
+			Cliente cliente = clienteDao.findByIdUser(usuario.getId());	
+			model.addAttribute("idUser",cliente.getId());
+		} catch (NullPointerException e) {
+			return "login";
+		}
+		
 		model.addAttribute("titulo", "BiciAndes");
 		model.addAttribute("sidebar", flagSideBar);
 		return "pages/index";
