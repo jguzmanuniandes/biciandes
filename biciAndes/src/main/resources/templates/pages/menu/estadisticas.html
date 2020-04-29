@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="shared/layout :: head"></head>
+
+<body>
+	<header th:replace="shared/layout :: header"></header>
+	<div class="d-flex" id="wrapper"
+		style="height: 80em; margin-bottom: 0px;">
+		<!-- Sidebar -->
+		<div th:if="${sidebar == 1}" class="bg-blue">
+			<div th:replace="shared/layout :: sidebar"></div>
+		</div>
+		<!-- /#sidebar-wrapper -->
+
+		<!-- Page Content -->
+		<div id="page-content-wrapper" style="width: 100%">
+
+			<h1 class="text-center  " th:text=${titulo}></h1>
+
+			<!-- Grafica -->
+			<div id="container"></div>
+			
+			<div id="container2"></div>
+
+		</div>
+		<!-- /#page-content-wrapper -->
+
+	</div>
+	<!-- /#wrapper -->
+<div th:replace="pages/js/graficar :: highchartsJS"></div>
+<div th:replace="pages/js/graficar :: highcharts2JS"></div>
+</body>
+<footer th:replace="shared/layout :: footer"></footer>
+</html>
