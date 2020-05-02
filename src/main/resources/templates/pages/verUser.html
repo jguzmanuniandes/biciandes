@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head th:replace="shared/layout :: head"></head>
+<body>
+
+	<header th:replace="shared/layout :: header"></header>
+
+	<div class="container py-4">
+
+		<div class="card bg-light">
+			<div class="card-header" th:text="${titulo}"></div>
+			<div class="card-body">
+
+				<h4 class="card-title">
+				</h4>
+
+				<img th:if="${#strings.length(cliente.urlPicture) > 0}"
+					class="img-thumbnail rounded float-left" style="max-width: 25%;"
+					th:src="@{${cliente.urlPicture}}" th:alt="${cliente.urlPicture}" />
+
+				<ul class="list-group">
+					<li class="list-group-item active" th:text="${cliente.name}"></li>
+					<li class="list-group-item" th:text="${cliente.lastName}"></li>
+					<li class="list-group-item" th:text="${cliente.email}"></li>
+				</ul>
+				<div style="margin:12px" class="d-flex flex-row-reverse">
+					<a class="btn btn-primary btn-lg"
+						th:href="@{'/editarUser/'}" th:text="'Editar'"
+						onclick="return confirm('¿Estas seguro que desea editar los datos?');"></a>
+				</div>
+
+			</div>
+		</div>
+
+	</div>
+
+	<footer th:replace="shared/layout :: footer"></footer>
+</body>
+</html>

@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="shared/layout :: head">
+<!-- Boostrap -->
+<link href="../static/css/bootstrap.min.cs" rel="stylesheet"
+	th:href="@{/css/bootstrap.min.css}">
+</head>
+<body>
+	<header th:replace="shared/layout :: header"></header>
+	<div th:if="${sidebar == 1}" class="bg-blue">
+		<div th:replace="shared/layout :: sidebar"></div>
+	</div>
+	<div class="container" >
+		<br />
+		<h2>Crear Grupo</h2>
+		<form action="#" th:action="@{/saveGroup}" class="form-group"
+			th:object=${group} method="post">
+			<div class="form-group">
+				<label for="id">Id</label> <input type="text" class="form-control"
+					th:field="*{id}" id="id" name="id">
+			</div>
+			<div class="form-group">
+				<label for="description">Descripción</label> <input type="text"
+					class="form-control" th:field="*{description}" id="description"
+					name="description">
+			</div>
+			<div class="form-group">
+				<label for="isPrivate">Es Privado</label> 
+				<select class="form-control" name="isPrivate" th:field="*{isPrivate}">
+					<option value="true">Si</option> 
+  					<option value="false">No</option> 
+				</select>
+			</div>
+			<button type="submit" class="btn btn-success">Crear</button>
+		</form>
+	</div>
+</body>
+</html>

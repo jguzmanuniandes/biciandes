@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="shared/layout :: head"></head>
+<body>
+
+	<header th:replace="shared/layout :: header"></header>
+
+	<div class="container py-4">
+
+		<div class="card bg-blue text-white">
+			<div class="card-header" th:text="${titulo}"></div>
+			<div class="card-body">
+
+				<div th:object="${cliente}" th:remove="tag">
+					<ul th:if="${#fields.hasErrors('*')}" class="alert alert-danger"
+						role="alert">
+						<li th:each="err : ${#fields.errors('*')}" th:text="${err}"></li>
+					</ul>
+				</div>
+
+				<form th:action="@{/editarUser}" th:object="${cliente}"
+					method="post" enctype="multipart/form-data">
+					<!-- User -->
+					<div class="form-group row">
+						<label for="email" class="col-sm-2 col-form-label">Usuario</label>
+						<div class="col-sm-6">
+							<input type="text" th:field="*{email}" disabled
+								class="form-control" th:errorclass="'form-control alert-danger'" />
+							<small class="form-text text-danger"
+								th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></small>
+						</div>
+					</div>
+
+					<input th:field="*{email}" class="form-control" type="hidden" /> <input
+						th:field="*{password}" class="form-control" type="hidden" /> <input
+						th:field="*{urlPicture}" class="form-control" type="hidden" />
+
+					<div class="form-group row">
+						<label for="nombres" class="col-sm-2 col-form-label">Nombres</label>
+						<div class="col-sm-6">
+							<input type="text" th:field="*{name}" class="form-control"
+								th:errorclass="'form-control alert-danger'" /> <small
+								class="form-text text-danger"
+								th:if="${#fields.hasErrors('name')}"
+								th:errors="*{cliente.nombres}"></small>
+						</div>
+					</div>
+					<div class="form-group row">
+						<label for="apellidos" class="col-sm-2 col-form-label">Apellidos</label>
+						<div class="col-sm-6">
+							<input type="text" th:field="*{lastName}" class="form-control"
+								th:errorclass="'form-control alert-danger'" /> <small
+								class="form-text text-danger"
+								th:if="${#fields.hasErrors('lastName')}" th:errors="*{lastName}"></small>
+						</div>
+					</div>
+					<div class="form-group row">
+						<label for="altura" class="col-sm-2 col-form-label">Atura</label>
+						<div class="col-sm-6">
+							<input type="text" th:field="*{height}" class="form-control"
+								th:errorclass="'form-control alert-danger'" /> <small
+								class="form-text text-danger"
+								th:if="${#fields.hasErrors('height')}" th:errors="*{height}"></small>
+						</div>
+					</div>
+					<div class="form-group row">
+						<label for="peso" class="col-sm-2 col-form-label">Peso</label>
+						<div class="col-sm-6">
+							<input type="text" th:field="*{weight}" class="form-control"
+								th:errorclass="'form-control alert-danger'" /> <small
+								class="form-text text-danger"
+								th:if="${#fields.hasErrors('weight')}" th:errors="*{weight}"></small>
+						</div>
+					</div>
+
+
+					<div th:if="${version == 'master'}">
+						<div class="form-group row">
+							<label for="file" class="col-sm-2 col-form-label">Foto</label>
+							<div class="col-sm-6">
+								<input type="file" name="file" class="form-control" />
+							</div>
+						</div>
+					</div>
+					<div class="form-group row btn-lg d-flex flex-row-reverse">
+						<div class="col-sm-6">
+							<a th:href="@{|/verUser|}"
+								class="btn btn-secondary">Regresar</a> 
+								<input type="submit"
+								th:value="${btnLabel}" class="btn btn-secondary" />
+						</div>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+
+	<footer th:replace="shared/layout :: footer"></footer>
+</body>
+</html>

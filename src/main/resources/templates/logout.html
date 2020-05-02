@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Log Out</title>
+</head>
+<body>
+    <div sec:authorize="isAuthenticated()">
+        <h1 th:inline="text">Hello <span sec:authentication="name"></span></h1>
+        <form th:action="@{/logout}" method="post">
+            <input type="submit" value="Sign Out"/>
+        </form>
+    </div>
+</body>
+</html>

@@ -1,0 +1,68 @@
+package com.uniandes.biciandes.util;
+
+import com.amazonaws.auth.AWSCredentials;
+import com.amazonaws.auth.AWSStaticCredentialsProvider;
+import com.amazonaws.auth.BasicAWSCredentials;
+import com.amazonaws.regions.Regions;
+import com.amazonaws.services.s3.AmazonS3;
+import com.amazonaws.services.s3.AmazonS3ClientBuilder;
+import com.amazonaws.services.s3.model.ObjectMetadata;
+import com.amazonaws.services.s3.model.PutObjectRequest;
+import com.amazonaws.services.s3.transfer.TransferManager;
+import com.amazonaws.services.s3.transfer.TransferManagerBuilder;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.IOException;
+import java.util.Date;
+
+@Component
+public class S3Upload {
+
+    private String accessKey;
+    private String secretKey;
+    private String bucketName;
+    private AWSCredentials credentials;
+    private AmazonS3 s3client;
+
+    public S3Upload(@Value("${amazon.s3.accesskey}") String accessKey,
+                    @Value("${amazon.s3.secretkey}") String secretKey,
+                    @Value("${amazon.s3.bucketname}") String bucketName) {
+        this.accessKey = accessKey;
+        this.secretKey = secretKey;
+        this.bucketName = bucketName;
+        this.credentials = new BasicAWSCredentials(this.accessKey, this.secretKey);
+        this.s3client = AmazonS3ClientBuilder
+                .standard()
+                .withCredentials(new AWSStaticCredentialsProvider(this.credentials))
+                .withRegion(Regions.US_EAST_2)
+                .build();
+    }
+
+    public String uploadFile(MultipartFile picture) {
+
+        ObjectMetadata objectMetaData = new ObjectMetadata();
+        objectMetaData.setContentType(picture.getContentType());
+        objectMetaData.setContentLength(picture.getSize());
+        
+        //TODO: Nombre Unico para la imagen 
+        String namePic = picture.getOriginalFilename().substring(0,picture.getOriginalFilename().lastIndexOf("."));
+        String type = picture.getContentType().substring(picture.getContentType().lastIndexOf("/")+1,picture.getContentType().length());
+        Date fecha = new Date();
+        String unicName = namePic+"_"+fecha.getTime()+"."+type;
+        
+        try {
+            s3client.putObject(
+                    new PutObjectRequest(bucketName, unicName, picture.getInputStream(), objectMetaData)
+            );
+
+            return s3client.getUrl(bucketName, unicName).toString();
+
+
+        } catch (IOException e) {
+            System.err.println(e.getMessage());
+            return null;
+        }
+    }
+}

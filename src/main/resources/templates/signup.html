@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head th:replace="shared/layout :: head"></head>
+<body>
+
+    <header th:replace="shared/layout :: header"></header>
+
+    <div class="container py-4">
+
+        <div class="card bg-blue text-white">
+            <div class="card-header" th:text="${titulo}"></div>
+            <div class="card-body">
+
+                <div th:object="${userDto}" th:remove="tag">
+                    <ul th:if="${#fields.hasErrors('*')}" class="alert alert-danger"
+                        role="alert">
+                        <li th:each="err : ${#fields.errors('*')}" th:text="${err}"></li>
+                    </ul>
+                </div>
+
+                <form action="#" th:action="@{/register}" th:object="${userDto}" method="POST" enctype="multipart/form-data">
+
+                    <div class="form-group row">
+                        <label for="email" class="col-sm-2 col-form-label">Email</label>
+                        <div class="col-sm-6">
+                            <input id="email" type="text" th:field="*{email}" class="form-control" th:errorclass="'form-control alert-danger'" />
+                            <small class="form-text text-danger" th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></small>
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <label for="password" class="col-sm-2 col-form-label">Contraseña</label>
+                        <div class="col-sm-6">
+                            <input id="password" type="password" th:field="*{password}" class="form-control" th:errorclass="'form-control alert-danger'" />
+                            <small class="form-text text-danger" th:if="${#fields.hasErrors('password')}" th:errors="*{password}"></small>
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <label for="matchingPassword" class="col-sm-2 col-form-label">Confirmar Contraseña</label>
+                        <div class="col-sm-6">
+                            <input id="matchingPassword" type="password" th:field="*{matchingPassword}" class="form-control" th:errorclass="'form-control alert-danger'"/>
+                            <small class="form-text text-danger" th:if="${#fields.hasErrors('matchingPassword')}" th:errors="*{matchingPassword}"></small>
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <label for="nombre" class="col-sm-2 col-form-label">Nombre</label>
+                        <div class="col-sm-6">
+                            <input id="nombre" type="text" th:field="*{firstName}" class="form-control" th:errorclass="'form-control alert-danger'" />
+                            <small class="form-text text-danger" th:if="${#fields.hasErrors('firstName')}" th:errors="*{firstName}"></small>
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <label for="apellido" class="col-sm-2 col-form-label">Apellido</label>
+                        <div class="col-sm-6">
+                            <input id="apellido" type="text" th:field="*{lastName}" class="form-control" th:errorclass="'form-control alert-danger'" />
+                            <small class="form-text text-danger" th:if="${#fields.hasErrors('lastName')}" th:errors="*{lastName}"></small>
+                        </div>
+                    </div>
+
+                    <div th:if="${version == 'master'}">
+                        <div class="form-group row">
+                            <label for="picture" class="col-sm-2 col-form-label">Foto</label>
+                            <div class="col-sm-6">
+                                <input id="picture" type="file" name="file" class="form-control" />
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group row btn-lg d-flex flex-row-reverse">
+                        <div class="col-sm-6">
+                            <input type="submit" th:value="${btnLabel}" class="btn btn-secondary" />
+                        </div>
+                    </div>
+
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <footer th:replace="shared/layout :: footer"></footer>
+</body>
+</html>

@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="shared/layout :: head">
+<!-- Boostrap -->
+<link href="../static/css/bootstrap.min.cs" rel="stylesheet"
+	th:href="@{/css/bootstrap.min.css}">
+</head>
+<body>
+	<header th:replace="shared/layout :: header"></header>
+	<div class="d-flex" id="wrapper"
+		style="height: 80em; margin-bottom: 0px;">
+		<!-- Sidebar -->
+		<div th:if="${sidebar == 1}" class="bg-blue">
+			<div th:replace="shared/layout :: sidebar"></div>
+		</div>
+		<!-- /#sidebar-wrapper -->
+
+		<!-- Page Content -->
+		<div>
+			<br />
+		</div>
+		<div class="container">
+			<br>
+			<h2 th:if="${listUser.isEmpty()}">No hay usuarios a quien puedas invitar :(</h2>
+			<div th:if="${!listUser.isEmpty()}">
+				<h2>Miembros</h2>
+				<table class="table">
+					<thead>
+						<tr>
+							<th>Email</th>
+							<th>Nombre</th>
+							<th>Apellido</th>
+							<th>Seleccionalo</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr th:each="members : ${listUser}">
+							<td th:text="${members.email}"></td>
+							<td th:text="${members.name}"></td>
+							<td th:text="${members.lastName}"></td>
+							<td><a th:href="@{/joinMember/{email}(email = ${members.email}, id=${idGroup})}">Asociar</a></td>
+							
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
+		<!-- /#page-content-wrapper -->
+
+	</div>
+	<!-- /#wrapper -->
+
+</body>
+</html>

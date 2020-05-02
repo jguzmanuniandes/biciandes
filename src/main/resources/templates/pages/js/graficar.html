@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+	<div th:fragment="highchartsJS">
+		<script src="https://code.highcharts.com/stock/highstock.js"></script>
+		<script src="https://code.highcharts.com/stock/modules/data.js"></script>
+		<script src="https://code.highcharts.com/stock/modules/exporting.js"></script>
+		<script src="https://code.highcharts.com/stock/modules/export-data.js"></script>
+		
+		<script type="text/javascript">
+		Highcharts.getJSON('/data', function (data) {
+
+		    // Create the chart
+		    Highcharts.stockChart('container', {
+
+
+		        rangeSelector: {
+		            selected: 1
+		        },
+
+		        title: {
+		            text: 'Velocidad Registrada en tu recorrido'
+		        },
+
+		        series: [{
+		            name: 'Velocidad Km/s',
+		            data: data,
+		            marker: {
+		                enabled: true,
+		                radius: 3
+		            },
+		            tooltip: {
+		                valueDecimals: 2
+		            },
+		            fillColor: {
+		                linearGradient: {
+		                    x1: 0,
+		                    y1: 0,
+		                    x2: 0,
+		                    y2: 1
+		                },
+		                stops: [
+		                    [0, Highcharts.getOptions().colors[0]],
+		                    [1, Highcharts.color(Highcharts.getOptions().colors[0]).setOpacity(0).get('rgba')]
+		                ]
+		            }
+		        }]
+		    });
+		});
+	
+		</script>
+	</div>
+	
+		<div th:fragment="highcharts2JS">
+		<script src="https://code.highcharts.com/stock/highstock.js"></script>
+		<script src="https://code.highcharts.com/stock/modules/data.js"></script>
+		<script src="https://code.highcharts.com/stock/modules/exporting.js"></script>
+		<script src="https://code.highcharts.com/stock/modules/export-data.js"></script>
+		
+		<script type="text/javascript">
+		Highcharts.getJSON('/data2', function (data) {
+	    // Create the chart
+	    Highcharts.stockChart('container2', {
+
+
+	        rangeSelector: {
+	            selected: 1
+	        },
+
+	        title: {
+	            text: 'Altura sobre el Nivel del Mar'
+	        },
+
+	        series: [{
+	            name: 'Altura',
+	            data: data,
+	            type: 'areaspline',
+	            threshold: null,
+
+	            shadow: true,
+	            tooltip: {
+	                valueDecimals: 2
+	            }
+	        }]
+	    });
+	});	
+		</script>
+	</div>
+</body>
+</html>

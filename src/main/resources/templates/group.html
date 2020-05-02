@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="shared/layout :: head">
+<!-- Boostrap -->
+<link href="../static/css/bootstrap.min.cs" rel="stylesheet"
+	th:href="@{/css/bootstrap.min.css}">
+</head>
+<body>
+	<header th:replace="shared/layout :: header"></header>
+	<div class="d-flex" id="wrapper"
+		style="height: 80em; margin-bottom: 0px;">
+		<!-- Sidebar -->
+		<div th:if="${sidebar == 1}" class="bg-blue">
+			<div th:replace="shared/layout :: sidebar"></div>
+		</div>
+		<!-- /#sidebar-wrapper -->
+
+		<!-- Page Content -->
+		<div>
+			<br />
+		</div>
+		<div class="container">
+			<br>
+			<h2 th:if="${listGroup.isEmpty()}">No Tienes grupos creados</h2>
+			<div th:if="${!listGroup.isEmpty()}">
+				<h2>Grupos</h2>
+				<table class="table">
+					<thead>
+						<tr>
+							<th>Id</th>
+							<th>Descripción</th>
+							<th>Privado</th>
+							<th>Modificar</th>
+							<th>Eliminar</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr th:each="group : ${listGroup}">
+							<td><a th:text="${group.id}" th:href="@{/viewGroup/{id}(id=${group.id})}"></a></td>
+							<td th:text="${group.description}"></td>
+							
+							<td  th:if="${group.isPrivate == true}" th:text="Si"></td>
+							<td  th:if="${group.isPrivate == false}" th:text="No"></td>
+							<td><a class="btn btn-info" th:href="@{/saveGroup/{id}(id=${group.id})}">Modificar</a></td>
+							<td><a class="btn btn-danger" th:href="@{/delete/{id}(id=${group.id})}">Eliminar</a></td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+			<div>
+				<a href="/saveGroup/0" class="btn btn-primary">Crear Grupo</a>
+			</div>
+		</div>
+		<!-- /#page-content-wrapper -->
+
+	</div>
+	<!-- /#wrapper -->
+
+</body>
+</html>

@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="shared/layout :: head"></head>
+<body>
+<header th:replace="shared/layout :: header"></header>
+<div class="d-flex" id="wrapper" style="height: 80em; margin-bottom: 0px;">
+    <!-- Sidebar -->
+    <div th:if="${sidebar == 1}" class="bg-blue"  >
+        <div th:replace="shared/layout :: sidebar" ></div>
+    </div>
+    <!-- /#sidebar-wrapper -->
+
+    <!-- Page Content -->
+    <div id="page-content-wrapper">
+
+        <h1 class="hp-title text-center mt-3 mb-0" th:text=${titulo}></h1>
+
+        <div class="dropdown-divider mb-4"></div>
+
+        <h1>Bienvenido a BiciAndes! Para comenzar inicia sesi&oacute;n o crea una cuenta</h1>
+
+    </div>
+    <!-- /#page-content-wrapper -->
+
+</div>
+<!-- /#wrapper -->
+</body>
+<footer th:replace="shared/layout :: footer" ></footer>
+</html>
