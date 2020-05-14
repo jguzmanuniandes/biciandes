@@ -1,6 +1,7 @@
 package com.uniandes.biciandes.controller;
 import com.amazonaws.auth.AWSCredentials;
 
+import com.uniandes.biciandes.config.ProductoConfig;
 import com.uniandes.biciandes.dto.PublishDto;
 import com.uniandes.biciandes.dto.UserDto;
 import com.uniandes.biciandes.dto.VideoDto;
@@ -25,6 +26,7 @@ import com.uniandes.biciandes.service.UserService;
 import com.uniandes.biciandes.service.VideoService;
 import com.uniandes.biciandes.util.S3Upload;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -54,8 +56,8 @@ public class PublishController {
 	
 	private UserService userService;
 
-	@Value("${producto.version}")
-	private String version;
+	@Autowired
+	ProductoConfig productoConfig;
 
 	public PublishController(S3Upload s3Upload, PhotoService photoService, VideoService videoService, UserService userService) {
 		this.s3Upload = s3Upload;
@@ -70,7 +72,9 @@ public class PublishController {
 		
 		model.addAttribute("photos", photoService.getUserPhotos(authentication.getName()));
 		model.addAttribute("videos", videoService.getUserVideos(authentication.getName()));
-		model.addAttribute("version", version);
+		model.addAttribute("version", productoConfig.getVersion());
+
+		model.addAttribute("publishVideo", productoConfig.getHasPublishVideo());
 		
 		return "publish";
 	}

@@ -25,7 +25,7 @@
 			  <label class="form-check-label" for="type">Photo</label>
 			</div>
 
-			<div th:if="${version == 'master'}">
+			<div th:if="${publishVideo}">
 				<div class="form-check form-check-inline">
 				  <input class="form-check-input" type="radio" name="type" id="type" value="video">
 				  <label class="form-check-label" for="type">Video</label>
@@ -42,7 +42,7 @@
         <br><br><br>
         <h1 class="hp-title text-center mt-3 mb-0">Mis publicaciones</h1>
 
-		<div th:if="${version == 'master'}">
+		<div th:if="${publishVideo}">
 			<div class="videos section">
 				<h1 class="hp-title text-center mt-3 mb-0">Videos</h1>
 

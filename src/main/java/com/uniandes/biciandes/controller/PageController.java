@@ -1,8 +1,8 @@
 package com.uniandes.biciandes.controller;
 
+import com.uniandes.biciandes.config.ProductoConfig;
 import com.uniandes.biciandes.exception.NullAuthenticationException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -15,8 +15,8 @@ import java.util.Optional;
 @Controller
 public class PageController {
 
-    @Value("${producto.version}")
-    private String version;
+    @Autowired
+    ProductoConfig productoConfig;
 
     @GetMapping({"/","/index"})
     public String index(Model model, @RequestParam(value = "sidebar", required = false) String id) {
@@ -40,7 +40,11 @@ public class PageController {
 
         model.addAttribute("titulo", "BiciAndes");
         model.addAttribute("sidebar", flagSideBar);
-        model.addAttribute("version", version);
+        model.addAttribute("version", productoConfig.getVersion());
+
+        model.addAttribute("bicycle", productoConfig.getHasBicycle());
+        model.addAttribute("publish", productoConfig.getHasPublish());
+        model.addAttribute("groups", productoConfig.getHasGroups());
 
         return "index";
     }

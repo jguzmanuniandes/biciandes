@@ -7,7 +7,6 @@ import com.uniandes.biciandes.model.User;
 import com.uniandes.biciandes.service.UserService;
 import com.uniandes.biciandes.util.S3Upload;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -26,8 +25,8 @@ import java.util.Optional;
 @Controller
 public class LoginController {
 
-    @Value("${biciandes.version}")
-    private String biciandesVersion;
+    @Autowired
+    ProductoConfig productoConfig;
     
     @Autowired
     ProductoConfig producto;
@@ -85,7 +84,8 @@ public class LoginController {
 
         model.addAttribute("titulo", "Ingrese los datos de Registro del cliente");
         model.addAttribute("isRegister", "true");
-        model.addAttribute("version", biciandesVersion);   //TODO: LPS
+        model.addAttribute("version", productoConfig.getVersion());
+        model.addAttribute("picture", productoConfig.getHasPicture());
         model.addAttribute("btnLabel", "Registrar");
 
         return "signup";

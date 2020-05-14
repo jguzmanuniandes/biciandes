@@ -80,7 +80,7 @@
 				   class="list-group-item list-group-item-action bg-blue text-light "><i
 						class="far fa-address-card fa-lg" style="margin-right: 7px"></i>
 					Datos de Usuario</a>
-				<div th:if="${version == 'master'}">
+				<div th:if="${bicycle}">
 					<a th:href="@{/bicycles}"
 					   class="list-group-item list-group-item-action bg-blue text-light"><i
 							class="fas fa-bicycle fa-lg" style="margin-right: 4px"></i> Datos
@@ -89,13 +89,13 @@
 				<a th:href="@{/estadisticas}" class="list-group-item list-group-item-action bg-blue text-light"><i
 						class="fas fa-chart-area fa.lg" style="margin-right: 9px"></i>
 					Estadisticas</a>
-				<div th:if="${version == 'beginner' or version == 'master'}">
+				<div th:if="${publish}">
 					<a th:href="@{/publish}"
 					   class="list-group-item list-group-item-action bg-blue text-light"><i
 							class="fas fa-share-alt fa-lg" style="margin-right: 9px"></i>
 						Publicaciones</a>
 				</div>
-				<div th:if="${version == 'master'}">
+				<div th:if="${groups}">
 				<a th:href="@{/group}"
 				   class="list-group-item list-group-item-action bg-blue text-light"><i
 						class="fas fa-share-alt fa-lg" style="margin-right: 9px"></i>

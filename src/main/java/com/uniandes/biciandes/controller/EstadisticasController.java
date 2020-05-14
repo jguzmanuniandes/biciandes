@@ -1,18 +1,18 @@
 package com.uniandes.biciandes.controller;
 
-import org.springframework.beans.factory.annotation.Value;
+import com.uniandes.biciandes.config.ProductoConfig;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.SessionAttributes;
 
 @Controller
 public class EstadisticasController {
 
-	@Value("${producto.version}")
-	private String version;
+	@Autowired
+	ProductoConfig productoConfig;
 
 	public EstadisticasController() {
 	}
@@ -20,9 +20,9 @@ public class EstadisticasController {
 	@RequestMapping(value = { "/estadisticas"})
 	public String cargar(Model model, @RequestParam(value = "sidebar", required = false) String id) {
 
-		model.addAttribute("sidebar", 1);
+		model.addAttribute("sidebar", 0); //To avoid sidebar bug
 		model.addAttribute("titulo", "Estadisticas");
-		model.addAttribute("version", version);
+		model.addAttribute("version", productoConfig.getVersion());
 
 		return "pages/estadisticas";
 	}
