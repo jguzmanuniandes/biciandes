@@ -1,0 +1,35 @@
+language: java
+
+stages:
+  - clean
+  - build
+  - test
+  - deploy
+
+branches:
+  only:
+    - master
+    - free
+    - beginner
+    - master
+
+jobs:
+  include:
+    - env: profile=branch
+    - if: branch=master
+        env: profile=master
+    - stage: clean
+      script: mvn clean
+    - stage: build
+      script: mvn install -DskipTests=true -Dspring.profiles.active=profile
+    - stage: test
+      script: mvn test -Dspring.profiles.active=profile
+    - stage: deploy
+      script: skip
+      deploy:
+        provider: heroku
+        api_key:
+          secure: $HEROKU_API_KEY
+
+
+
