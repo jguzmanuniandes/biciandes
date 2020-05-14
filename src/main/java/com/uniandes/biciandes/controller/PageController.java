@@ -33,7 +33,7 @@ public class PageController {
 
         try {
             //TODO: Do something with model
-            Optional.ofNullable(SecurityContextHolder.getContext().getAuthentication()).orElseThrow(() -> new NullAuthenticationException("User has not a session"));
+            Optional.ofNullable(SecurityContextHolder.getContext().getAuthentication()).orElseThrow(() -> new NullAuthenticationException("User has no session"));
         }catch (NullAuthenticationException e) {
             return "login";
         }
