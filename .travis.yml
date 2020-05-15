@@ -16,7 +16,7 @@ branches:
     - master
 
 env:
-  profile=branch
+  $PROFILE=$TRAVIS_BRANCH
 
 before_install:
   - sudo apt-get install maven
@@ -25,8 +25,8 @@ before_install:
 install: skip
 script:
   - mvn clean
-  - mvn install -DskipTests=true -Dspring.profiles.active=profile
-  - mvn test -Dspring.profiles.active=profile
+  - mvn install -DskipTests=true -Dspring.profiles.active=$PROFILE
+  - mvn test -Dspring.profiles.active=$PROFILE
 
 deploy:
   provider: heroku
