@@ -23,6 +23,7 @@ jobs:
     #- env: profile=branch
     #- if: branch=master
     #    env: profile=master
+    - install: skip
     - stage: clean
       script: mvn clean
     - stage: build
