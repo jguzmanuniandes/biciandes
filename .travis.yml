@@ -16,7 +16,7 @@ branches:
     - master
 
 before_install:
-  - sudo apt-get install mvn
+  - sudo apt-get install maven
 
 jobs:
   include:
