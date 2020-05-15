@@ -2,11 +2,11 @@ dist: bionic
 
 language: java
 
-stages:
-  - clean
-  - build
-  - test
-  - deploy
+#stages:
+#  - clean
+#  - build
+#  - test
+#  - deploy
 
 branches:
   only:
@@ -15,27 +15,41 @@ branches:
     - beginner
     - master
 
+env:
+  profile=branch
+
 before_install:
   - sudo apt-get install maven
   - chmod a+x ./mvnw
 
-jobs:
-  include:
+install: skip
+script:
+  - mvn clean
+  - mvn install -DskipTests=true -Dspring.profiles.active=profile
+  - mvn test -Dspring.profiles.active=profile
+
+deploy:
+  provider: heroku
+  api_key:
+    secure: $HEROKU_API_KEY
+
+#jobs:
+#  include:
     #- env: profile=branch
     #- if: branch=master
     #    env: profile=master
-    - stage: clean
-      script: mvn clean
-    - stage: build
-      script: mvn install -DskipTests=true -Dspring.profiles.active=profile
-    - stage: test
-      script: mvn test -Dspring.profiles.active=profile
-    - stage: deploy
-      script: skip
-      deploy:
-        provider: heroku
-        api_key:
-          secure: $HEROKU_API_KEY
+#    - stage: clean
+#      script: mvn clean
+#    - stage: build
+#      script: mvn install -DskipTests=true -Dspring.profiles.active=profile
+#    - stage: test
+#      script: mvn test -Dspring.profiles.active=profile
+#    - stage: deploy
+#      script: skip
+#      deploy:
+#        provider: heroku
+#        api_key:
+#          secure: $HEROKU_API_KEY
 
 
 
