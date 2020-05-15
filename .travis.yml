@@ -1,3 +1,5 @@
+dist: bionic
+
 language: java
 
 stages:
@@ -13,11 +15,14 @@ branches:
     - beginner
     - master
 
+before_install:
+  - sudo apt-get install mvn
+
 jobs:
   include:
-    - env: profile=branch
-    - if: branch=master
-        env: profile=master
+    #- env: profile=branch
+    #- if: branch=master
+    #    env: profile=master
     - stage: clean
       script: mvn clean
     - stage: build
