@@ -13,10 +13,9 @@ branches:
     - master
     - free
     - beginner
-    - master
 
 env:
-  $PROFILE=$TRAVIS_BRANCH
+  PROFILE=$TRAVIS_BRANCH
 
 before_install:
   - sudo apt-get install maven
