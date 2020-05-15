@@ -1,4 +1,4 @@
-language: java
+#language: java
 
 stages:
   - clean
@@ -12,6 +12,9 @@ branches:
     - free
     - beginner
     - master
+
+before_script:
+  - apt-get install mvn
 
 jobs:
   include:
