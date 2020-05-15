@@ -15,15 +15,15 @@ branches:
 
 jobs:
   include:
-    - env: profile=branch
-    - if: branch=master
-        env: profile=master
+    #- env: profile=branch
+    #- if: branch=master
+    #    env: profile=master
     - stage: clean
       script: mvn clean
     - stage: build
-      script: mvn install -DskipTests=true -Dspring.profiles.active=profile
+      script: mvn install -DskipTests=true -Dspring.profiles.active=branch
     - stage: test
-      script: mvn test -Dspring.profiles.active=profile
+      script: mvn test -Dspring.profiles.active=branch
     - stage: deploy
       script: skip
       deploy:
